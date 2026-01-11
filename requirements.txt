@@ -8,3 +8,6 @@ cryptography==41.0.4
 
 # Manipolazione immagini (EXIF Metadata Scrubber)
 Pillow==10.0.1
+
+# Colori
+colorama==0.4.6

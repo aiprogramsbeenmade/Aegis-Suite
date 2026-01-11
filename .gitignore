@@ -11,3 +11,9 @@ venv/
 # OS
 .DS_Store
 Thumbs.db
+
+# Ambiente virtuale (Virtual Environment)
+bin/
+lib/
+include/
+pyvenv.cfg
