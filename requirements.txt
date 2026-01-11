@@ -1,0 +1,10 @@
+# Aegis Suite - Requisiti di sistema
+
+# Gestione delle richieste API (Leak Checker e IP Info)
+requests==2.31.0
+
+# Crittografia avanzata (Standard AES-256)
+cryptography==41.0.4
+
+# Manipolazione immagini (EXIF Metadata Scrubber)
+Pillow==10.0.1
