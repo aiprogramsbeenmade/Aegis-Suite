@@ -1,6 +1,6 @@
 import os
 from colorama import Fore, Style, init
-from modules import identity, integrity, crypto, network, web_scan
+from modules import identity, integrity, crypto, network, web_scan, steganography
 
 # Inizializza colorama
 init(autoreset=True)
@@ -18,6 +18,16 @@ HEADER = CYAN
 INFO = GREEN
 WARN = YELLOW
 ALERT = RED
+
+def clean_path(path):
+    """Pulisce il percorso del file da spazi extra, virgolette e backslash."""
+    if not path:
+        return ""
+    # Rimuove virgolette e spazi bianchi all'inizio/fine (incluso quello del drag-and-drop)
+    path = path.strip().replace("'", "").replace('"', "")
+    # Sistema i backslash degli spazi tipici del terminale Mac/Linux
+    path = path.replace("\\ ", " ")
+    return path
 
 
 def clear_screen():
@@ -66,14 +76,14 @@ def menu_integrity():
         scelta = input(f"\n{YELLOW}Scegli un'opzione: ")
 
         if scelta == "1":
-            path = input("Trascina qui il file: ").strip('"')
+            path = clean_path(input("Trascina qui il file: ").strip('"'))
             print(f"{GREEN}Hash SHA-256: {RESET}{integrity.calculate_sha256(path)}")
         elif scelta == "2":
-            path = input("Percorso immagine originale: ").strip('"')
+            path = clean_path(input("Percorso immagine originale: ").strip('"'))
             output = input("Nome file pulito (es. pulita.jpg): ").strip('"')
             print(f"{GREEN}{integrity.scrub_exif(path, output)}")
         elif scelta == "3":
-            path = input(f"{RED}Percorso file da distruggere: {RESET}").strip('"')
+            path = clean_path(input(f"{RED}Percorso file da distruggere: {RESET}").strip('"'))
             print(f"{RED}!!! ATTENZIONE: AZIONE IRREVERSIBILE !!!")
             conferma = input(f"{YELLOW}Sei sicuro? (s/n): ")
             if conferma.lower() == 's':
@@ -180,7 +190,7 @@ def menu_web_scan():
                 print(results)
 
         elif scelta == "2":
-            path = input(f"\nTrascina il file da analizzare: ").strip('"').strip()
+            path = clean_path(input(f"\nTrascina il file da analizzare: ").strip('"').strip())
             print(f"{CYAN}Calcolo hash e ricerca nel database...")
             results = web_scan.scan_file_hash(path)
 
@@ -227,18 +237,91 @@ def menu_privacy_secrets():
             print(f"\n{CYAN}Contenuto: {RESET}{crypto.load_secure_note(name, pwd)}")
 
         elif scelta == "3":
-            img = input("Percorso immagine (PNG consigliata): ").strip('"')
+            img = clean_path(input("Percorso immagine (PNG consigliata): ").strip('"'))
             msg = input("Messaggio segreto: ")
             out = input("Nome file output (es. segreto.png): ")
             print(steganography.encode_image(img, msg, out))
 
         elif scelta == "4":
-            img = input("Percorso immagine con segreto: ").strip('"')
+            img = clean_path(input("Percorso immagine con segreto: ").strip('"'))
             print(f"\n{CYAN}Messaggio trovato: {RESET}{steganography.decode_image(img)}")
 
         elif scelta == "0":
             break
 
+
+def menu_crypto_files():
+    while True:
+        print(f"\n{CYAN}--- 🔒 AEGIS SUITE: File Locker ---")
+        print(f"{GREEN}1.{RESET} Cripta un File (supporto universale)")
+        print(f"{GREEN}2.{RESET} Decripta un File (.aegis)")
+        print(f"{RED}0.{RESET} Torna indietro")
+
+        scelta = input(f"\n{YELLOW}Scegli un'opzione: ")
+
+        if scelta == "1":
+            path = clean_path(input("Trascina qui il file da criptare: ").strip('"').strip())
+            pwd = input("Imposta una password di cifratura: ")
+
+            # Cripta il file
+            risultato = crypto.encrypt_file(path, pwd)
+            print(risultato)
+
+            # Opzione extra: Shredding del file originale
+            if "successo" in risultato:
+                choice = input(f"{WARN}Vuoi eliminare definitivamente il file originale in chiaro? (s/n): ")
+                if choice.lower() == 's':
+                    integrity.secure_delete(path)
+                    print(f"{GREEN}File originale rimosso in modo sicuro.")
+
+
+        elif scelta == "2":
+
+            path = clean_path(input(f"\n{YELLOW}Trascina il file .aegis: {RESET}").strip('"').strip())
+
+            if not path.endswith(".aegis"):
+                print(f"{RED}❌ Errore: Seleziona un file con estensione .aegis!{RESET}")
+
+                continue
+
+            pwd = input(f"{YELLOW}Inserisci la password: {RESET}")
+
+            print(f"\n{CYAN}--- Ripristino Estensione ---{RESET}")
+
+            print("Che tipo di file era in origine?")
+
+            print("1. Testo (.txt)")
+
+            print("2. Immagine (.jpg / .png)")
+
+            print("3. Documento (.pdf)")
+
+            print("4. Altro (inserisci estensione manualmente)")
+
+            ext_choice = input(f"\n{YELLOW}Scegli opzione: {RESET}")
+
+            if ext_choice == "1":
+                ext = ".txt"
+
+            elif ext_choice == "2":
+                ext = input("Specifica (jpg o png): ").strip(); ext = f".{ext}"
+
+            elif ext_choice == "3":
+                ext = ".pdf"
+
+            else:
+                ext = input("Inserisci estensione (es. .zip, .docx): ").strip()
+
+            if not ext.startswith("."): ext = "." + ext
+
+            # Chiamata alla funzione di decriptazione con la ciliegina
+
+            print(f"\n{CYAN}Decriptazione in corso...{RESET}")
+
+            print(crypto.decrypt_file(path, pwd, original_extension=ext))
+
+        elif scelta == "0":
+            break
 
 def main():
     while True:
@@ -252,6 +335,7 @@ def main():
         print(f"{GREEN}4.{RESET} Diagnostica Rete")
         print(f"{GREEN}5.{RESET} URL Scanner (VirusTotal)")
         print(f"{GREEN}6.{RESET} Steganografia/Note Private")
+        print(f"{GREEN}7.{RESET} File Locker (Cripta/Decripta File)")
         print(f"{RED}0.{RESET} Esci")
 
         scelta = input(f"\n{YELLOW}Seleziona un modulo: ")
@@ -268,12 +352,16 @@ def main():
             menu_web_scan()
         elif scelta == "6":
             menu_privacy_secrets()
+        elif scelta == "7":
+            menu_crypto_files()
         elif scelta == "0":
             print(f"{GREEN}Chiusura Aegis Suite. Resta al sicuro!")
             break
         else:
             print(f"{RED}Scelta errata.")
             input("Premi Invio per continuare...")
+
+
 
 
 if __name__ == "__main__":
