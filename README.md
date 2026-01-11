@@ -1,14 +1,71 @@
-# 🛡️ Aegis Suite - Cybersecurity Multitool
+# 🛡️ Aegis Suite v1.1
 
-Aegis Suite è un multitool modulare scritto in Python per la protezione dell'identità, l'integrità dei file e la sicurezza di rete.
+Aegis Suite è un multitool di cybersecurity modulare scritto in Python. Progettato per la protezione dell'identità, l'analisi dell'integrità dei file, la crittografia sicura e la diagnostica di rete.
 
-## ✨ Caratteristiche
-- **Identity Protection:** Auditor di password basato su entropia e controllo leak tramite API HIBP.
-- **Data Integrity:** Calcolo hash SHA-256, pulizia metadati EXIF e distruzione sicura file (Shredder).
-- **Privacy Sandbox:** Cifratura/Decifratura messaggi in AES-256.
-- **Network Health:** Scanner di porte e verifica IP pubblico/VPN.
+## ✨ Caratteristiche Principali
+
+### 🆔 Identity Protection
+* **Password Analyzer:** Verifica la robustezza e la presenza in leak pubblici (Pwned).
+* **Generator:** Crea passphrase sicure e password casuali ad alta entropia.
+
+### 📂 File Security & Integrity
+* **Hash Calculator:** Calcolo SHA-256 per verificare l'integrità.
+* **Metadata Scrubber:** Rimuove i dati EXIF dalle immagini per proteggere la privacy.
+* **Secure Shredder:** Eliminazione definitiva e irreversibile dei file.
+
+### 🔐 Privacy & Secrets
+* **AES-256 Text Encryption:** Cifratura simmetrica per messaggi testuali.
+* **Secure Notes:** Crea e leggi note protette salvate localmente in formato `.aegis`.
+* **Steganography:** Nascondi messaggi segreti all'interno dei pixel delle immagini (LSB).
+
+### 🌐 Network & Intelligence
+* **Network Health:** Info IP pubblico e Port Scanner locale.
+* **VirusTotal Scanner:** Analisi in tempo reale di URL e Hash di file sospetti tramite API globale.
+
+---
 
 ## 🚀 Installazione
-1. Clona il repository: `git clone https://github.com/aiprogramsbeenmade/Aegis-Suite.git`
-2. Installa le dipendenze: `pip install -r requirements.txt`
-3. Avvia la suite: `python main.py`
+
+1. **Clona il repository:**
+   ```bash
+   git clone [https://github.com/aiprogramsbeenmade/Aegis-Suite.git](https://github.com/aiprogramsbeenmade/Aegis-Suite.git)
+   cd Aegis-Suite
+   
+2. **Crea un ambiente virtuale (consigliato):**
+   ```bash
+   python -m venv bin
+   source bin/activate  # Su macOS/Linux
+   # Oppure su Windows: bin\Scripts\activate
+   
+3. **Installa le dipendenze:**
+   ```bash
+   pip install -r requirements.txt
+   
+4. **Configurazione API VirusTotal:**
+   Per abilitare lo scanner di URL e File, crea un file `.env` nella cartella principale del progetto e inserisci la tua chiave personale:
+   ```text
+   VT_API_KEY=la_tua_chiave_personale_qui
+   
+5. **Avvia Aegis Suite:**
+   ````bash
+   python3 main.py
+   
+---
+
+## 🛠️ Tecnologie Utilizzate
+* **Python 3.12+**
+* **Colorama:** Per un'interfaccia CLI moderna e colorata.
+* **PyCryptodome:** Crittografia di grado militare (AES-256).
+* **Pillow:** Per la manipolazione dei pixel (Steganografia LSB).
+* **Requests:** Per l'integrazione con l'intelligence di VirusTotal.
+* **Dotenv:** Per la gestione sicura delle credenziali e chiavi API.
+
+## 🤝 Contribuisci
+Le pull request sono benvenute! Per modifiche importanti, apri prima un'issue per discutere cosa vorresti cambiare.
+
+## ⚖️ Licenza
+Distribuito sotto licenza **MIT**. Consulta il file `LICENSE` per maggiori dettagli.
+
+---
+
+> **⚠️ DISCLAIMER:** Aegis Suite è stato creato esclusivamente a scopo didattico e per la sicurezza personale. L'autore non si assume alcuna responsabilità per l'uso improprio o illegale di questo software. Utilizzalo responsabilmente.
