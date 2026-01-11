@@ -28,7 +28,7 @@ Aegis Suite è un multitool di cybersecurity modulare scritto in Python. Progett
 
 1. **Clona il repository:**
    ```bash
-   git clone [https://github.com/aiprogramsbeenmade/Aegis-Suite.git](https://github.com/aiprogramsbeenmade/Aegis-Suite.git)
+   git clone https://github.com/aiprogramsbeenmade/Aegis-Suite.git
    cd Aegis-Suite
    
 2. **Crea un ambiente virtuale (consigliato):**
