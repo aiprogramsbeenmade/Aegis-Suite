@@ -57,3 +57,23 @@ def decrypt_text(combined_base64: str, password: str):
         return original_text.decode('utf-8')
     except Exception:
         return "❌ Errore: Password errata o messaggio corrotto."
+
+
+def save_secure_note(filename, content, password):
+    encrypted = encrypt_text(content, password)
+    # Crea la cartella vault se non esiste
+    if not os.path.exists("vault"):
+        os.makedirs("vault")
+
+    with open(f"vault/{filename}.aegis", "w") as f:
+        f.write(encrypted)
+    return f"Nota '{filename}' salvata e criptata in /vault."
+
+
+def load_secure_note(filename, password):
+    try:
+        with open(f"vault/{filename}.aegis", "r") as f:
+            encrypted_content = f.read()
+        return decrypt_text(encrypted_content, password)
+    except FileNotFoundError:
+        return "❌ Errore: Nota non trovata."

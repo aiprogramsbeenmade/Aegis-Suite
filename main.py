@@ -1,6 +1,6 @@
 import os
 from colorama import Fore, Style, init
-from modules import identity, integrity, crypto, network
+from modules import identity, integrity, crypto, network, web_scan
 
 # Inizializza colorama
 init(autoreset=True)
@@ -133,6 +133,113 @@ def menu_network():
             break
 
 
+def menu_web_scan():
+    while True:
+        print(f"\n{CYAN}--- 🛡️  AEGIS SUITE: URL Scanner (VirusTotal) ---")
+        print(f"{GREEN}1.{RESET} Scansiona un URL")
+        print(f"{GREEN}2.{RESET} Scansiona un File")
+        print(f"{RED}0.{RESET} Torna al menu principale")
+
+        scelta = input(f"\n{YELLOW}Scegli un'opzione: ")
+
+        if scelta == "1":
+            target_url = input(f"\nInserisci l'URL da controllare: ").strip()
+            if not target_url.startswith("http"):
+                print(f"{WARN}Nota: Assicurati di includere http:// o https://")
+
+            print(f"{CYAN}Interrogazione database VirusTotal in corso...")
+            results = web_scan.scan_url(target_url)
+
+            if isinstance(results, dict):
+                print(f"\n{HEADER}REPORT DI ANALISI:")
+                print(f"--------------------------")
+
+                # Colori dinamici in base alla pericolosità
+                m_color = RED if results['malicious'] > 0 else GREEN
+                s_color = YELLOW if results['suspicious'] > 0 else RESET
+
+                print(f"{m_color}Maligni:   {results['malicious']}")
+                print(f"{s_color}Sospetti:  {results['suspicious']}")
+                print(f"{GREEN}Innocui:   {results['harmless']}")
+                print(f"{RESET}Analisi totali effettuate: {results['total']}")
+                print(f"--------------------------")
+
+                # Logica di valutazione intelligente
+                if results['malicious'] > 3:  # Soglia di allerta impostata a 3
+                    print(f"{RED}⚠️  PERICOLO: Questo link è segnalato come maligno da più fonti!")
+                elif results['malicious'] > 0:
+                    print(
+                        f"{YELLOW}ℹ️  NOTA: Rilevato un possibile falso positivo ({results['malicious']} segnalazione).")
+                    print(f"{GREEN}✅ Il link è probabilmente sicuro (99%).")
+                elif results['suspicious'] > 0:
+                    print(f"{YELLOW}⚠️  ATTENZIONE: Alcuni motori hanno dubbi su questo link.")
+                else:
+                    print(f"{GREEN}✅ PULITO: Nessuna minaccia rilevata.")
+            else:
+                # Mostra l'errore se non è un dizionario (es. API Key mancante)
+                print(results)
+
+        elif scelta == "2":
+            path = input(f"\nTrascina il file da analizzare: ").strip('"').strip()
+            print(f"{CYAN}Calcolo hash e ricerca nel database...")
+            results = web_scan.scan_file_hash(path)
+
+            if isinstance(results, dict):
+                print(f"\n{HEADER}RISULTATO ANALISI FILE:")
+                print(f"Hash SHA-256: {results['hash']}")
+
+                m_color = RED if results['malicious'] > 3 else (YELLOW if results['malicious'] > 0 else GREEN)
+                print(f"{m_color}Segnalazioni Maligne: {results['malicious']}")
+
+                if results['malicious'] > 3:
+                    print(f"{RED}⚠️  ALLERTA: File pericoloso rilevato!")
+                elif results['malicious'] > 0:
+                    print(f"{YELLOW}ℹ️  Possibile falso positivo, procedi con cautela.")
+                else:
+                    print(f"{GREEN}✅ Nessuna minaccia nota per questo file.")
+            else:
+                print(results)
+
+        elif scelta == "0":
+            break
+
+
+def menu_privacy_secrets():
+    while True:
+        print(f"\n{CYAN}--- 🤐 AEGIS SUITE: Privacy & Secrets ---")
+        print(f"{GREEN}1.{RESET} Crea Nota Protetta (.aegis)")
+        print(f"{GREEN}2.{RESET} Leggi Nota Protetta")
+        print(f"{GREEN}3.{RESET} Nascondi testo in Immagine (Steganografia)")
+        print(f"{GREEN}4.{RESET} Estrai testo da Immagine")
+        print(f"{RED}0.{RESET} Torna al menu principale")
+
+        scelta = input(f"\n{YELLOW}Scegli: ")
+
+        if scelta == "1":
+            name = input("Nome nota: ")
+            content = input("Scrivi il contenuto segreto: ")
+            pwd = input("Imposta Password: ")
+            print(crypto.save_secure_note(name, content, pwd))
+
+        elif scelta == "2":
+            name = input("Nome nota da aprire: ")
+            pwd = input("Inserisci Password: ")
+            print(f"\n{CYAN}Contenuto: {RESET}{crypto.load_secure_note(name, pwd)}")
+
+        elif scelta == "3":
+            img = input("Percorso immagine (PNG consigliata): ").strip('"')
+            msg = input("Messaggio segreto: ")
+            out = input("Nome file output (es. segreto.png): ")
+            print(steganography.encode_image(img, msg, out))
+
+        elif scelta == "4":
+            img = input("Percorso immagine con segreto: ").strip('"')
+            print(f"\n{CYAN}Messaggio trovato: {RESET}{steganography.decode_image(img)}")
+
+        elif scelta == "0":
+            break
+
+
 def main():
     while True:
         clear_screen()
@@ -143,6 +250,8 @@ def main():
         print(f"{GREEN}2.{RESET} Sicurezza File")
         print(f"{GREEN}3.{RESET} Crittografia")
         print(f"{GREEN}4.{RESET} Diagnostica Rete")
+        print(f"{GREEN}5.{RESET} URL Scanner (VirusTotal)")
+        print(f"{GREEN}6.{RESET} Steganografia/Note Private")
         print(f"{RED}0.{RESET} Esci")
 
         scelta = input(f"\n{YELLOW}Seleziona un modulo: ")
@@ -152,9 +261,13 @@ def main():
         elif scelta == "2":
             menu_integrity()
         elif scelta == "3":
-            menu_crypto()  # Qui avevi un errore logico (avevi messo lo shredder!)
+            menu_crypto()
         elif scelta == "4":
             menu_network()
+        elif scelta == "5":
+            menu_web_scan()
+        elif scelta == "6":
+            menu_privacy_secrets()
         elif scelta == "0":
             print(f"{GREEN}Chiusura Aegis Suite. Resta al sicuro!")
             break
