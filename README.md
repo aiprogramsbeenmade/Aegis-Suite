@@ -17,10 +17,17 @@ Aegis Suite è un multitool di cybersecurity modulare scritto in Python. Progett
 * **AES-256 Text Encryption:** Cifratura simmetrica per messaggi testuali.
 * **Secure Notes:** Crea e leggi note protette salvate localmente in formato `.aegis`.
 * **Steganography:** Nascondi messaggi segreti all'interno dei pixel delle immagini (LSB).
+* **Aegis Vault:** Password manager avanzato con supporto per documenti (ID, Patente) e identità fake "usa e getta".
+* **System Hardening Check:** Audit istantaneo della sicurezza del OS (Firewall, privilegi e configurazioni critiche).
 
 ### 🌐 Network & Intelligence
 * **Network Health:** Info IP pubblico e Port Scanner locale.
 * **VirusTotal Scanner:** Analisi in tempo reale di URL e Hash di file sospetti tramite API globale.
+
+### 🎭 Special Ops & OSINT
+* **Social Media Finder:** Localizza username su oltre 50 piattaforme con tecniche anti-rilevamento.
+* **Username Cross-Search:** Analisi profonda tramite Google Dorks per individuare tracce digitali.
+* **Text-to-Emoji Encryption:** Cripta messaggi in stringhe di emoji (Stealth Mode), ideale per comunicazioni discrete.
 
 ---
 
@@ -33,9 +40,9 @@ Aegis Suite è un multitool di cybersecurity modulare scritto in Python. Progett
    
 2. **Crea un ambiente virtuale (consigliato):**
    ```bash
-   python -m venv bin
-   source bin/activate  # Su macOS/Linux
-   # Oppure su Windows: bin\Scripts\activate
+   python -m venv venv
+   source venv/bin/activate  # Su macOS/Linux
+   # Oppure su Windows: venv\bin\Scripts\activate
    
 3. **Installa le dipendenze:**
    ```bash
