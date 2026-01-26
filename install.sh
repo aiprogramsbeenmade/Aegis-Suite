@@ -9,6 +9,7 @@ source venv/bin/activate
 # 2. Installazione dipendenze e pacchetto
 pip install --upgrade pip
 pip install -e .
+pip3 install -r requirements.txt
 
 # 3. Creazione Alias nel sistema (opzionale se non usi setup.py)
 SHELL_RC="$HOME/.zshrc"
