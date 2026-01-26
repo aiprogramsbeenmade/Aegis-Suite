@@ -1,6 +1,6 @@
 import os
 from colorama import Fore, Style, init
-from modules import identity, integrity, crypto, network, web_scan, steganography, password_manager, persona, social_finder, hardening, emoji_crypto, cross_search
+from modules import updater, identity, integrity, crypto, network, web_scan, steganography, password_manager, persona, social_finder, hardening, emoji_crypto, cross_search
 import webbrowser
 # Inizializza colorama
 init(autoreset=True)
@@ -503,6 +503,7 @@ def menu_osint_crypto():
                 webbrowser.open(url)
 
 def main():
+    updater.check_for_updates()
     while True:
         clear_screen()
         print(HEADER + "======================================")
