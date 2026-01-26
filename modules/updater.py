@@ -2,7 +2,7 @@ import requests
 import subprocess
 
 CURRENT_VERSION = "2.0"
-REPO_URL = "https://api.github.com/repos/aiprogramsbeenmade/Aegis-Suite/releases/latest"
+REPO_URL = "https://api.github.com/repos/aiprogramsbeenmade/Aegis-Suite/tags/latest"
 
 
 def check_for_updates():
