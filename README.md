@@ -31,7 +31,7 @@ Aegis Suite è un multitool di cybersecurity modulare scritto in Python. Progett
 
 ---
 
-## 🚀 Installazione Manuale
+## 🚀 Installazione
 
 1. **Clona il repository:**
    ```bash
@@ -57,22 +57,6 @@ Aegis Suite è un multitool di cybersecurity modulare scritto in Python. Progett
    ```bash
    python3 main.py
 ---
-## 🚀 Installazione Automatica
-
-1. **Scarica l'ultima release:** Clicca [QUI](https://github.com/aiprogramsbeenmade/Aegis-Suite/tags)
-2. **Decomprimi il file**
-3. **Esegui lo script di installazione:**
-   ```bash
-   chmod +x install.sh uninstall.sh
-   ./install.sh
-4. **Configurazione API VirusTotal:**
-   Per abilitare lo scanner di URL e File, crea un file `.env` nella cartella principale del progetto e inserisci la tua chiave personale:
-   ```text
-   VT_API_KEY=la_tua_chiave_personale_qui
-   
-5. **Riavvia il terminale e digita:**
-   ```bash
-   aegis
 ## 🛠️ Tecnologie Utilizzate
 * **Python 3.12+**
 * **Colorama:** Per un'interfaccia CLI moderna e colorata.
