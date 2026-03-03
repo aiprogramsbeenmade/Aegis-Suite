@@ -12,6 +12,7 @@ Aegis Suite è un multitool di cybersecurity modulare scritto in Python. Progett
 * **Hash Calculator:** Calcolo SHA-256 per verificare l'integrità.
 * **Metadata Scrubber:** Rimuove i dati EXIF dalle immagini per proteggere la privacy.
 * **Secure Shredder:** Eliminazione definitiva e irreversibile dei file.
+* **Metadata Sniffer:** Analizza ogni foto in ogni formato e restituisce i metadata al suo interno.
 
 ### 🔐 Privacy & Secrets
 * **AES-256 Text Encryption:** Cifratura simmetrica per messaggi testuali.
