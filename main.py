@@ -72,23 +72,37 @@ def menu_integrity():
         print(f"{GREEN}1.{RESET} Calcola Hash SHA-256 (Integrità)")
         print(f"{GREEN}2.{RESET} EXIF Metadata Scrubber (Privacy Foto)")
         print(f"{GREEN}3.{RESET} Secure Shredder (Eliminazione Definitiva)")
+        print(f"{GREEN}4.{RESET} Analisi Investigator (Leggi Metadati/GPS)") # <--- AGGIUNTA
         print(f"{RED}0.{RESET} Torna al menu principale")
 
         scelta = input(f"\n{YELLOW}Scegli un'opzione: ")
 
         if scelta == "1":
-            path = clean_path(input("Trascina qui il file: ").strip('"'))
+            path = clean_path(input("Inserisci il percorso del file: "))
             print(f"{GREEN}Hash SHA-256: {RESET}{integrity.calculate_sha256(path)}")
         elif scelta == "2":
-            path = clean_path(input("Percorso immagine originale: ").strip('"'))
-            output = input("Nome file pulito (es. pulita.jpg): ").strip('"')
+            path = clean_path(input("Percorso immagine originale: "))
+            output = input("Nome file pulito (es. pulita.jpg): ")
             print(f"{GREEN}{integrity.scrub_exif(path, output)}")
         elif scelta == "3":
-            path = clean_path(input(f"{RED}Percorso file da distruggere: {RESET}").strip('"'))
-            print(f"{RED}!!! ATTENZIONE: AZIONE IRREVERSIBILE !!!")
+            path = clean_path(input(f"{RED}Percorso file da distruggere: {RESET}"))
             conferma = input(f"{YELLOW}Sei sicuro? (s/n): ")
             if conferma.lower() == 's':
                 print(f"{GREEN}{integrity.secure_delete(path)}")
+        elif scelta == "4": # <--- LOGICA NUOVA OPZIONE
+            path = clean_path(input("Inserisci il percorso dell'immagine (.jpg, .png, .heic): "))
+            data = integrity.get_exif_data(path)
+            if isinstance(data, dict):
+                print(f"\n{CYAN}--- DATI EXIF RILEVATI ---{RESET}")
+                for key, val in data.items():
+                    if key != "GPSInfo" and key != "MakerNote": # MakerNote è troppo lungo, lo saltiamo
+                        print(f"{WHITE}{key}:{RESET} {val}")
+                
+                if "GoogleMapsLink" in data:
+                    print(f"\n{YELLOW}📍 POSIZIONE RILEVATA:{RESET}")
+                    print(f"{GREEN}{data['GoogleMapsLink']}{RESET}")
+            else:
+                print(f"{RED}{data}{RESET}")
         elif scelta == "0":
             break
 

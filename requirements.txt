@@ -14,5 +14,6 @@ Pillow==10.0.1
 colorama==0.4.6
 
 #File .env
+pillow-heif
 python-dotenv==1.0.1
 
